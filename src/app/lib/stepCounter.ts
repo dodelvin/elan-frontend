@@ -7,8 +7,8 @@
  * ensureStarted() must be called from a click handler.
  */
 
-const STEP_THRESHOLD = 10; // acceleration magnitude threshold to count a step (tuned experimentally)
-const MIN_STEP_INTERVAL_MS = 600; // minimum time between steps to prevent double-counting (tuned experimentally)
+const STEP_THRESHOLD = 15; // acceleration magnitude threshold to count a step (tuned experimentally)
+const MIN_STEP_INTERVAL_MS = 800; // minimum time between steps to prevent double-counting (tuned experimentally)
 
 let started = false;
 let lastStepAt = 0;
