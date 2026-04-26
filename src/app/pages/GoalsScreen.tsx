@@ -11,7 +11,11 @@ export function GoalsScreen() {
   const [goals, saveGoals] = useGoals();
   const [savedFlash, setSavedFlash] = useState(false);
 
-  const update = (patch: Partial<typeof goals>) => {
+  // 1. Updated the function to accept the event 'e'
+  const update = (e: React.MouseEvent, patch: Partial<typeof goals>) => {
+    e.preventDefault();   // Prevents default browser actions (like form submission)
+    e.stopPropagation();  // STOPS navigation/bubbling to parent elements
+    
     saveGoals(patch);
     setSavedFlash(true);
     setTimeout(() => setSavedFlash(false), 1000);
@@ -40,11 +44,12 @@ export function GoalsScreen() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <Button variant="outline" onClick={() => update({ stepsGoal: Math.max(1000, goals.stepsGoal - 1000) })}>
+            {/* 2. Pass the event (e) into the update function */}
+            <Button variant="outline" onClick={(e) => update(e, { stepsGoal: Math.max(1000, goals.stepsGoal - 1000) })}>
               <Minus size={16} />
             </Button>
             <p className="text-h5">{goals.stepsGoal.toLocaleString()}</p>
-            <Button variant="outline" onClick={() => update({ stepsGoal: goals.stepsGoal + 1000 })}>
+            <Button variant="outline" onClick={(e) => update(e, { stepsGoal: goals.stepsGoal + 1000 })}>
               <Plus size={16} />
             </Button>
           </div>
@@ -64,11 +69,11 @@ export function GoalsScreen() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <Button variant="outline" onClick={() => update({ waterGoal: Math.max(1, goals.waterGoal - 1) })}>
+            <Button variant="outline" onClick={(e) => update(e, { waterGoal: Math.max(1, goals.waterGoal - 1) })}>
               <Minus size={16} />
             </Button>
             <p className="text-h5">{goals.waterGoal} {t.dashboard.glasses}</p>
-            <Button variant="outline" onClick={() => update({ waterGoal: goals.waterGoal + 1 })}>
+            <Button variant="outline" onClick={(e) => update(e, { waterGoal: goals.waterGoal + 1 })}>
               <Plus size={16} />
             </Button>
           </div>
@@ -88,11 +93,11 @@ export function GoalsScreen() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <Button variant="outline" onClick={() => update({ sleepGoal: Math.max(4, goals.sleepGoal - 0.5) })}>
+            <Button variant="outline" onClick={(e) => update(e, { sleepGoal: Math.max(4, goals.sleepGoal - 0.5) })}>
               <Minus size={16} />
             </Button>
             <p className="text-h5">{goals.sleepGoal}h</p>
-            <Button variant="outline" onClick={() => update({ sleepGoal: Math.min(12, goals.sleepGoal + 0.5) })}>
+            <Button variant="outline" onClick={(e) => update(e, { sleepGoal: Math.min(12, goals.sleepGoal + 0.5) })}>
               <Plus size={16} />
             </Button>
           </div>
@@ -112,11 +117,11 @@ export function GoalsScreen() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <Button variant="outline" onClick={() => update({ mindfulnessGoal: Math.max(5, goals.mindfulnessGoal - 5) })}>
+            <Button variant="outline" onClick={(e) => update(e, { mindfulnessGoal: Math.max(5, goals.mindfulnessGoal - 5) })}>
               <Minus size={16} />
             </Button>
             <p className="text-h5">{goals.mindfulnessGoal} {t.dashboard.min}</p>
-            <Button variant="outline" onClick={() => update({ mindfulnessGoal: goals.mindfulnessGoal + 5 })}>
+            <Button variant="outline" onClick={(e) => update(e, { mindfulnessGoal: goals.mindfulnessGoal + 5 })}>
               <Plus size={16} />
             </Button>
           </div>
