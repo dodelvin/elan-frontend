@@ -725,7 +725,7 @@ export const translations = {
     // Bottom Navigation
     nav: {
       home: 'Home',
-      fitness: 'Fitness',
+      fitness: 'Goals',
       meals: 'Meals',
       meditation: 'Meditation',
       community: 'Community',
