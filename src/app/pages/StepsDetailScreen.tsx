@@ -34,8 +34,8 @@ useEffect(() => {
 }, []);
 
   const goalSteps = 10000;
-  const currentSteps = weekData[4].steps; // Friday (today)
-  const avgSteps = Math.round(weekData.reduce((sum, day) => sum + day.steps, 0) / weekData.length);
+  const currentSteps = weekData[4]?.steps || 0;
+  const avgSteps = weekData.length ? Math.round(weekData.reduce((sum, day) => sum + day.steps, 0) / weekData.length) : 0;
   const totalSteps = weekData.reduce((sum, day) => sum + day.steps, 0);
 
   return (
