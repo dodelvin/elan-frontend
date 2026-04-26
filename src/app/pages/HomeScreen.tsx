@@ -17,6 +17,11 @@ import { Activity, Droplet, Moon, Smile, Brain, Heart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet } from '../lib/api';
+import { subscribeToSteps } from '../lib/stepCounter';
+
+// inside the component:
+const [liveSteps, setLiveSteps] = useState(0);
+useEffect(() => subscribeToSteps(setLiveSteps), []);
 
 // Variables related to the API response shape from /api/metrics/home.
 interface HomeOverview {
@@ -96,14 +101,16 @@ export function HomeScreen() {
                     key={stat.key}
                     className="flex flex-col items-center text-center py-4 cursor-pointer"
                     onClick={() => stat.key === 'steps' && navigate('/steps')}
->
+              >
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
                   style={{ backgroundColor: color + '15' }}
                 >
                   <Icon size={24} style={{ color }} />
                 </div>
-                <p className="text-subtitle2 mb-1">{stat.value}</p>
+                <p className="text-subtitle2 mb-1">
+                  {stat.key === 'steps' ? liveSteps.toLocaleString() : stat.value}
+                </p>
                 <p className="text-caption text-[var(--color-mid-dark)]">{stat.label}</p>
               </Card>
             );

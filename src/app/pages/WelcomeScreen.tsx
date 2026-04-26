@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { ElanLogo } from '../components/ElanLogo';
 import { useLanguage } from '../contexts/LanguageContext';
+import { ensureStarted } from '../lib/stepCounter';
 
 /**
  * WelcomeScreen
@@ -37,10 +38,16 @@ export function WelcomeScreen() {
 
         {/* Two CTAs — primary for new users, outline for returning */}
         <div className="space-y-4">
-          <Button fullWidth onClick={() => navigate('/onboarding')}>
+          <Button fullWidth onClick={async () => {
+            await ensureStarted();
+            navigate('/onboarding');
+          }}>
             {t.welcome.signUp}
           </Button>
-          <Button fullWidth variant="outline" onClick={() => navigate('/signin')}>
+          <Button fullWidth variant="outline" onClick={async () => {
+            await ensureStarted();
+            navigate('/signin');
+          }}>
             {t.welcome.signIn}
           </Button>
         </div>

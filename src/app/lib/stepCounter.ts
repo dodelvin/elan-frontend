@@ -1,64 +1,56 @@
-let listening = false;
-let lastStepAt = 0;
-let stepCount = 0;
-let onStepCb: ((total: number) => void) | null = null;
-let debugCb: ((info: string) => void) | null = null;
+/**
+ * stepCounter.ts
+ * --------------
+ * Always-on step counter using device motion. Single shared instance —
+ * starts on first call to ensureStarted(), keeps counting until the page
+ * is closed. iOS requires explicit user gesture for permission, so
+ * ensureStarted() must be called from a click handler.
+ */
 
 const STEP_THRESHOLD = 11;
 const MIN_STEP_INTERVAL_MS = 300;
 
+let started = false;
+let lastStepAt = 0;
+let stepCount = 0;
+const listeners = new Set<(total: number) => void>();
+
 function handleMotion(e: DeviceMotionEvent) {
   const a = e.accelerationIncludingGravity;
-  if (!a || a.x == null || a.y == null || a.z == null) {
-    debugCb?.('Motion event but no acceleration data');
-    return;
-  }
-
+  if (!a || a.x == null || a.y == null || a.z == null) return;
   const magnitude = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
-  debugCb?.(`mag: ${magnitude.toFixed(1)} | steps: ${stepCount}`);
-
   const now = Date.now();
   if (magnitude > STEP_THRESHOLD && (now - lastStepAt) > MIN_STEP_INTERVAL_MS) {
     lastStepAt = now;
     stepCount++;
-    onStepCb?.(stepCount);
+    listeners.forEach(cb => cb(stepCount));
   }
 }
 
-export async function startStepCounter(
-  onStep: (total: number) => void,
-  onDebug?: (info: string) => void
-): Promise<boolean> {
-  if (listening) return true;
-  onStepCb = onStep;
-  debugCb = onDebug || null;
+/** Subscribe to step updates. Returns an unsubscribe function. */
+export function subscribeToSteps(cb: (total: number) => void): () => void {
+  listeners.add(cb);
+  cb(stepCount);  // immediately give current value
+  return () => listeners.delete(cb);
+}
 
+/** Must be called from a user gesture on iOS to grant permission. */
+export async function ensureStarted(): Promise<boolean> {
+  if (started) return true;
   const DM = (DeviceMotionEvent as any);
   if (typeof DM.requestPermission === 'function') {
-    debugCb?.('Requesting permission...');
     try {
       const result = await DM.requestPermission();
-      debugCb?.(`Permission: ${result}`);
       if (result !== 'granted') return false;
-    } catch (err: any) {
-      debugCb?.(`Permission error: ${err.message}`);
+    } catch {
       return false;
     }
-  } else {
-    debugCb?.('No requestPermission API — adding listener directly');
   }
-
   window.addEventListener('devicemotion', handleMotion);
-  listening = true;
-  debugCb?.('Listener attached');
+  started = true;
   return true;
 }
 
-export function stopStepCounter() {
-  window.removeEventListener('devicemotion', handleMotion);
-  listening = false;
-}
-
-export function resetStepCount() {
-  stepCount = 0;
+export function getStepCount(): number {
+  return stepCount;
 }

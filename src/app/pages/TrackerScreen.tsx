@@ -15,7 +15,6 @@ import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { apiGet, apiPost } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
-import { startStepCounter, stopStepCounter } from '../lib/stepCounter';
 
 type Mood = 'great' | 'good' | 'okay' | 'low' | null;
 
@@ -47,30 +46,16 @@ export function TrackerScreen() {
   const [loaded, setLoaded] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const navigate = useNavigate();
-  const [tracking, setTracking] = useState(false);
-  const [debugInfo, setDebugInfo] = useState<string>('not started');
 
   // Variables related to mood selector options
   const moods = [
     { value: 'great' as const, emoji: '😊', label: t.dashboard.great },
-    { value: 'good'  as const, emoji: '🙂', label: t.dashboard.good  },
-    { value: 'okay'  as const, emoji: '😐', label: t.dashboard.okay  },
-    { value: 'low'   as const, emoji: '😔', label: t.dashboard.low   }
+    { value: 'good' as const, emoji: '🙂', label: t.dashboard.good },
+    { value: 'okay' as const, emoji: '😐', label: t.dashboard.okay },
+    { value: 'low' as const, emoji: '😔', label: t.dashboard.low }
   ];
 
-  const toggleTracking = async () => {
-    if (tracking) {
-      stopStepCounter();
-      setTracking(false);
-    } else {
-      const ok = await startStepCounter(
-        (total) => setSteps(total),
-        (info) => setDebugInfo(info)
-      );
-      if (ok) setTracking(true);
-      else alert('Motion permission denied. Enable in iPhone Settings → Safari → Motion & Orientation Access');
-    }
-};
+  // Load today's metrics on mount.
 
   // Load today's metrics on mount.
   useEffect(() => {
@@ -115,8 +100,8 @@ export function TrackerScreen() {
           <h4>{t.fitness.title}</h4>
           {/* Subtle save status */}
           {saveStatus === 'saving' && <span className="text-caption text-[var(--color-mid-dark)]">Saving…</span>}
-          {saveStatus === 'saved'  && <span className="text-caption text-green-600">✓ Saved</span>}
-          {saveStatus === 'error'  && <span className="text-caption text-red-600">⚠ Failed</span>}
+          {saveStatus === 'saved' && <span className="text-caption text-green-600">✓ Saved</span>}
+          {saveStatus === 'error' && <span className="text-caption text-red-600">⚠ Failed</span>}
         </div>
         <p className="text-body2 text-[var(--color-mid-dark)] mb-6">{t.fitness.subtitle}</p>
 
@@ -159,16 +144,9 @@ export function TrackerScreen() {
             </div>
           </div>
           <div className="flex items-center justify-between">
+            <Button variant="outline" onClick={() => setSteps(Math.max(0, steps - 100))}><Minus size={16} /></Button>
             <p className="text-h5">{steps.toLocaleString()}</p>
-            <Button
-              variant={tracking ? 'outline' : 'primary'}
-              onClick={toggleTracking}
-            >
-              {tracking ? 'Stop' : 'Start tracking'}
-            </Button>
-            <p className="text-caption text-[var(--color-mid-dark)] mt-2 text-center">
-  {debugInfo}
-</p>
+            <Button variant="outline" onClick={() => setSteps(steps + 100)}><Plus size={16} /></Button>
           </div>
         </Card>
 
@@ -223,9 +201,8 @@ export function TrackerScreen() {
               <button
                 key={m.value}
                 onClick={() => setMood(m.value)}
-                className={`p-4 rounded-2xl flex flex-col items-center gap-2 transition-all ${
-                  mood === m.value ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-lightest)] text-[var(--color-dark)]'
-                }`}
+                className={`p-4 rounded-2xl flex flex-col items-center gap-2 transition-all ${mood === m.value ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-lightest)] text-[var(--color-dark)]'
+                  }`}
               >
                 <span className="text-3xl">{m.emoji}</span>
                 <span className="text-caption">{m.label}</span>

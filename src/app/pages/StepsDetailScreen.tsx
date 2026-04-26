@@ -3,9 +3,14 @@ import { MobileLayout } from '../components/MobileLayout';
 import { Card } from '../components/Card';
 import { ChevronLeft, Activity, TrendingUp, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLanguage } from '../contexts/LanguageContext';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell } from 'recharts';
 import { apiGet } from '../lib/api';
+import { subscribeToSteps } from '../lib/stepCounter';
+
+const [liveSteps, setLiveSteps] = useState(0);
+useEffect(() => subscribeToSteps(setLiveSteps), []);
+
+// then use `liveSteps` instead of `liveSteps` in the big number display
 
 export function StepsDetailScreen() {
   const navigate = useNavigate();
@@ -34,7 +39,7 @@ useEffect(() => {
 }, []);
 
   const goalSteps = 10000;
-  const currentSteps = weekData[4]?.steps || 0;
+  const liveSteps = weekData[4]?.steps || 0;
   const avgSteps = weekData.length ? Math.round(weekData.reduce((sum, day) => sum + day.steps, 0) / weekData.length) : 0;
   const totalSteps = weekData.reduce((sum, day) => sum + day.steps, 0);
 
@@ -65,15 +70,15 @@ useEffect(() => {
         <Card className="mb-6 bg-gradient-to-br from-red-50 to-white border-red-100">
           <div className="text-center py-6">
             <p className="text-subtitle2 text-[var(--color-mid-dark)] mb-2">{'Today'}</p>
-            <h2 className="text-[var(--color-primary)] mb-2">{currentSteps.toLocaleString()}</h2>
+            <h2 className="text-[var(--color-primary)] mb-2">{liveSteps.toLocaleString()}</h2>
             <div className="w-full bg-[var(--color-lighter)] rounded-full h-2 mb-2">
               <div
                 className="bg-gradient-to-r from-red-500 to-red-600 h-2 rounded-full transition-all"
-                style={{ width: `${Math.min((currentSteps / goalSteps) * 100, 100)}%` }}
+                style={{ width: `${Math.min((liveSteps / goalSteps) * 100, 100)}%` }}
               />
             </div>
             <p className="text-caption text-[var(--color-mid-dark)]">
-              {currentSteps >= goalSteps ? 'Goal Reached' : `${(goalSteps - currentSteps).toLocaleString()} ${'to goal'}`}
+              {liveSteps >= goalSteps ? 'Goal Reached' : `${(goalSteps - liveSteps).toLocaleString()} ${'to goal'}`}
             </p>
           </div>
         </Card>
