@@ -123,7 +123,7 @@ export function HomeScreen() {
         <div className="grid grid-cols-3 gap-3">
           <Card className="text-center py-4 cursor-pointer" onClick={() => navigate('/tracker')}>
             <Activity size={32} className="mx-auto mb-2 text-[var(--color-primary)]" />
-            <p className="text-caption">{t.fitness.title}</p>
+            <p className="text-caption">{t.goals.title}</p>
           </Card>
           <Card className="text-center py-4 cursor-pointer" onClick={() => navigate('/meditation')}>
             <Brain size={32} className="mx-auto mb-2 text-[var(--color-primary)]" />

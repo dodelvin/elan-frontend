@@ -50,8 +50,8 @@ export function MoodDetailScreen() {
 
   const stressLevels = [
     { value: 'low' as const,    label: t.dashboard.low    },
-    { value: 'medium' as const, label: t.fitness.medium   },
-    { value: 'high' as const,   label: t.fitness.high     }
+    { value: 'medium' as const, label: t.goals.medium   },
+    { value: 'high' as const,   label: t.goals.high     }
   ];
 
   // Static-ish week chart placeholder; keeps the visual without faking
@@ -59,13 +59,13 @@ export function MoodDetailScreen() {
   const moodToValue: Record<Mood, number> = { low: 1, okay: 2, good: 3, great: 4 };
   const todayValue = todayMood ? moodToValue[todayMood] : 0;
   const weekData = [
-    { id: 'mon', day: t.fitness.mon, moodValue: 3, date: '20' },
-    { id: 'tue', day: t.fitness.tue, moodValue: 4, date: '21' },
-    { id: 'wed', day: t.fitness.wed, moodValue: 2, date: '22' },
-    { id: 'thu', day: t.fitness.thu, moodValue: 4, date: '23' },
-    { id: 'fri', day: t.fitness.fri, moodValue: 4, date: '24' },
-    { id: 'sat', day: t.fitness.sat, moodValue: 3, date: '25' },
-    { id: 'sun', day: t.fitness.sun, moodValue: todayValue || 4, date: '26' }
+    { id: 'mon', day: t.goals.mon, moodValue: 3, date: '20' },
+    { id: 'tue', day: t.goals.tue, moodValue: 4, date: '21' },
+    { id: 'wed', day: t.goals.wed, moodValue: 2, date: '22' },
+    { id: 'thu', day: t.goals.thu, moodValue: 4, date: '23' },
+    { id: 'fri', day: t.goals.fri, moodValue: 4, date: '24' },
+    { id: 'sat', day: t.goals.sat, moodValue: 3, date: '25' },
+    { id: 'sun', day: t.goals.sun, moodValue: todayValue || 4, date: '26' }
   ];
 
   const getMoodColor = (v: number) => v >= 4 ? '#22c55e' : v >= 3 ? '#84cc16' : v >= 2 ? '#eab308' : '#f97316';
@@ -91,7 +91,7 @@ export function MoodDetailScreen() {
           </div>
         </div>
 
-        <h6 className="mb-4">{t.fitness.today}</h6>
+        <h6 className="mb-4">{t.goals.today}</h6>
         <Card className="mb-4">
           <h6 className="mb-4">{t.dashboard.mood}</h6>
           <div className="grid grid-cols-4 gap-2">
@@ -108,7 +108,7 @@ export function MoodDetailScreen() {
         </Card>
 
         <Card className="mb-6">
-          <h6 className="mb-4">{t.fitness.stressLevel}</h6>
+          <h6 className="mb-4">{t.goals.stressLevel}</h6>
           <div className="grid grid-cols-3 gap-2">
             {stressLevels.map((level) => (
               <button key={level.value} onClick={() => setTodayStress(level.value)}
@@ -121,7 +121,7 @@ export function MoodDetailScreen() {
           </div>
         </Card>
 
-        <h6 className="mb-4">{t.fitness.thisWeek}</h6>
+        <h6 className="mb-4">{t.goals.thisWeek}</h6>
         <Card className="mb-6 p-6">
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={weekData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>

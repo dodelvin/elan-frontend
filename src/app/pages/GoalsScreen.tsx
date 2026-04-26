@@ -24,7 +24,7 @@ export function GoalsScreen() {
           <h4>{t.nav.goals}</h4>
           {savedFlash && <span className="text-caption text-green-600">✓ Saved</span>}
         </div>
-        <p className="text-body2 text-[var(--color-mid-dark)] mb-6">{t.fitness.setWellnessTargets}</p>
+        <p className="text-body2 text-[var(--color-mid-dark)] mb-6">{t.goals.setWellnessTargets}</p>
 
         {/* Steps */}
         <Card className="mb-4">
@@ -34,8 +34,8 @@ export function GoalsScreen() {
                 <Activity size={24} className="text-red-500" />
               </div>
               <div>
-                <h6>{t.fitness.steps}</h6>
-                <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.dailyTarget}</p>
+                <h6>{t.goals.steps}</h6>
+                <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.dailyTarget}</p>
               </div>
             </div>
           </div>
@@ -59,7 +59,7 @@ export function GoalsScreen() {
               </div>
               <div>
                 <h6>{t.meals.waterIntake}</h6>
-                <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.glassesPerDay}</p>
+                <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.glassesPerDay}</p>
               </div>
             </div>
           </div>
@@ -83,7 +83,7 @@ export function GoalsScreen() {
               </div>
               <div>
                 <h6>{t.dashboard.sleep}</h6>
-                <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.hoursPerNight}</p>
+                <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.hoursPerNight}</p>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@ export function GoalsScreen() {
               </div>
               <div>
                 <h6>{t.dashboard.mindfulness}</h6>
-                <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.minutesPerDay}</p>
+                <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.minutesPerDay}</p>
               </div>
             </div>
           </div>

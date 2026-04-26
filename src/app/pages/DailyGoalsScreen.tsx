@@ -23,12 +23,12 @@ export function DailyGoalsScreen() {
     try {
       const cached = localStorage.getItem(todayKey());
       if (cached) return JSON.parse(cached);
-    } catch {}
+    } catch { }
     return [
-      { id: 1, title: t.dashboard.morningYoga,    completed: false },
-      { id: 2, title: t.dashboard.logWater,       completed: false },
-      { id: 3, title: t.dashboard.startWorkout,   completed: false },
-      { id: 4, title: t.dashboard.logMeal,        completed: false }
+      { id: 1, title: t.dashboard.morningYoga, completed: false },
+      { id: 2, title: t.dashboard.logWater, completed: false },
+      { id: 3, title: t.dashboard.startWorkout, completed: false },
+      { id: 4, title: t.dashboard.logMeal, completed: false }
     ];
   });
   const [showInput, setShowInput] = useState(false);
@@ -36,7 +36,7 @@ export function DailyGoalsScreen() {
 
   // Persist to localStorage on every change.
   useEffect(() => {
-    try { localStorage.setItem(todayKey(), JSON.stringify(goals)); } catch {}
+    try { localStorage.setItem(todayKey(), JSON.stringify(goals)); } catch { }
   }, [goals]);
 
   const toggleGoal = (id: number) => {
@@ -87,9 +87,8 @@ export function DailyGoalsScreen() {
                     ? <CheckCircle size={24} className="text-[var(--color-primary)]" />
                     : <Circle size={24} className="text-[var(--color-mid-dark)]" />}
                 </div>
-                <p className={`flex-1 text-left text-body2 transition-all ${
-                  goal.completed ? 'line-through text-[var(--color-mid-dark)]' : 'text-[var(--color-darkest)]'
-                }`}>
+                <p className={`flex-1 text-left text-body2 transition-all ${goal.completed ? 'line-through text-[var(--color-mid-dark)]' : 'text-[var(--color-darkest)]'
+                  }`}>
                   {goal.title}
                 </p>
               </button>
@@ -108,7 +107,7 @@ export function DailyGoalsScreen() {
             <button onClick={() => setShowInput(true)}
               className="w-full flex items-center gap-3 py-4 px-4 text-[var(--color-primary)] hover:bg-[var(--color-lightest)] transition-colors rounded-xl">
               <Plus size={24} />
-              <p className="text-body2">{t.fitness.addGoal}</p>
+              <p className="text-body2">{t.goals.addGoal}</p>
             </button>
           </div>
         </Card>

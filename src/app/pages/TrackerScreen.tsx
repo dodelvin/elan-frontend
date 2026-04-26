@@ -97,13 +97,13 @@ export function TrackerScreen() {
     <MobileLayout>
       <div className="px-6 pt-12 pb-24">
         <div className="flex items-center justify-between mb-2">
-          <h4>{t.fitness.title}</h4>
+          <h4>{t.goals.title}</h4>
           {/* Subtle save status */}
           {saveStatus === 'saving' && <span className="text-caption text-[var(--color-mid-dark)]">Saving…</span>}
           {saveStatus === 'saved' && <span className="text-caption text-green-600">✓ Saved</span>}
           {saveStatus === 'error' && <span className="text-caption text-red-600">⚠ Failed</span>}
         </div>
-        <p className="text-body2 text-[var(--color-mid-dark)] mb-6">{t.fitness.subtitle}</p>
+        <p className="text-body2 text-[var(--color-mid-dark)] mb-6">{t.goals.subtitle}</p>
 
         {/* Hydration */}
         <Card className="mb-4">
@@ -138,8 +138,8 @@ export function TrackerScreen() {
                 <Activity size={24} className="text-red-500" />
               </div>
               <div>
-                <h6>{t.fitness.steps}</h6>
-                <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.stepsGoal}</p>
+                <h6>{t.goals.steps}</h6>
+                <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.stepsGoal}</p>
               </div>
             </div>
           </div>
@@ -194,7 +194,7 @@ export function TrackerScreen() {
         <Card>
           <div className="mb-4">
             <h6 className="mb-2">{t.dashboard.mood}</h6>
-            <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.subtitle}</p>
+            <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.subtitle}</p>
           </div>
           <div className="grid grid-cols-4 gap-2">
             {moods.map((m) => (

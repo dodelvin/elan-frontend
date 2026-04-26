@@ -38,19 +38,19 @@ export function WaterDetailScreen() {
         await apiPost('/api/metrics/today', { water: todayGlasses });
         setSavedFlash(true);
         setTimeout(() => setSavedFlash(false), 1000);
-      } catch {}
+      } catch { }
     }, 500);
   }, [todayGlasses, loaded]);
 
   // Week chart — last bar is today's live value, others are placeholder fillers
   const weekData = [
-    { id: 'mon', day: t.fitness.mon, glasses: 7, date: '20' },
-    { id: 'tue', day: t.fitness.tue, glasses: 8, date: '21' },
-    { id: 'wed', day: t.fitness.wed, glasses: 6, date: '22' },
-    { id: 'thu', day: t.fitness.thu, glasses: 8, date: '23' },
-    { id: 'fri', day: t.fitness.fri, glasses: 6, date: '24' },
-    { id: 'sat', day: t.fitness.sat, glasses: 5, date: '25' },
-    { id: 'sun', day: t.fitness.sun, glasses: todayGlasses, date: '26' }
+    { id: 'mon', day: t.goals.mon, glasses: 7, date: '20' },
+    { id: 'tue', day: t.goals.tue, glasses: 8, date: '21' },
+    { id: 'wed', day: t.goals.wed, glasses: 6, date: '22' },
+    { id: 'thu', day: t.goals.thu, glasses: 8, date: '23' },
+    { id: 'fri', day: t.goals.fri, glasses: 6, date: '24' },
+    { id: 'sat', day: t.goals.sat, glasses: 5, date: '25' },
+    { id: 'sun', day: t.goals.sun, glasses: todayGlasses, date: '26' }
   ];
 
   const avgGlasses = Math.round(weekData.reduce((s, d) => s + d.glasses, 0) / weekData.length);
@@ -79,7 +79,7 @@ export function WaterDetailScreen() {
 
         <Card className="mb-6 bg-gradient-to-br from-blue-50 to-white border-blue-100">
           <div className="text-center py-6">
-            <p className="text-subtitle2 text-[var(--color-mid-dark)] mb-2">{t.fitness.today}</p>
+            <p className="text-subtitle2 text-[var(--color-mid-dark)] mb-2">{t.goals.today}</p>
             <div className="flex items-center justify-center gap-4 mb-4">
               <Button variant="outline" onClick={() => setTodayGlasses(Math.max(0, todayGlasses - 1))} className="w-12 h-12 rounded-full p-0 flex items-center justify-center">
                 <Minus size={20} />
@@ -94,12 +94,12 @@ export function WaterDetailScreen() {
                 style={{ width: `${Math.min((todayGlasses / goalGlasses) * 100, 100)}%` }} />
             </div>
             <p className="text-caption text-[var(--color-mid-dark)]">
-              {todayGlasses >= goalGlasses ? t.fitness.goalReached : `${goalGlasses - todayGlasses} ${t.fitness.toGoal}`}
+              {todayGlasses >= goalGlasses ? t.goals.goalReached : `${goalGlasses - todayGlasses} ${t.goals.toGoal}`}
             </p>
           </div>
         </Card>
 
-        <h6 className="mb-4">{t.fitness.thisWeek}</h6>
+        <h6 className="mb-4">{t.goals.thisWeek}</h6>
         <Card className="mb-6 p-6">
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={weekData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
@@ -122,12 +122,12 @@ export function WaterDetailScreen() {
           </div>
         </Card>
 
-        <h6 className="mb-4">{t.fitness.statistics}</h6>
+        <h6 className="mb-4">{t.goals.statistics}</h6>
         <div className="grid grid-cols-2 gap-3 mb-6">
           <Card className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Droplet size={16} className="text-blue-500" />
-              <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.average}</p>
+              <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.average}</p>
             </div>
             <h5 className="text-[var(--color-darkest)]">{avgGlasses}</h5>
             <p className="text-caption text-[var(--color-mid-dark)]">{t.dashboard.glasses}/{t.analytics.perDay}</p>
@@ -135,10 +135,10 @@ export function WaterDetailScreen() {
           <Card className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Droplet size={16} className="text-blue-500" />
-              <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.total}</p>
+              <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.total}</p>
             </div>
             <h5 className="text-[var(--color-darkest)]">{totalGlasses}</h5>
-            <p className="text-caption text-[var(--color-mid-dark)]">{t.dashboard.glasses} {t.fitness.thisWeek}</p>
+            <p className="text-caption text-[var(--color-mid-dark)]">{t.dashboard.glasses} {t.goals.thisWeek}</p>
           </Card>
         </div>
       </div>

@@ -85,7 +85,7 @@ export function SleepDetailScreen() {
 
         <Card className="mb-6 bg-gradient-to-br from-purple-50 to-white border-purple-100">
           <div className="text-center py-6">
-            <p className="text-subtitle2 text-[var(--color-mid-dark)] mb-2">{t.fitness.today}</p>
+            <p className="text-subtitle2 text-[var(--color-mid-dark)] mb-2">{t.goals.today}</p>
             <div className="flex items-center justify-center gap-4 mb-4">
               <Button variant="outline" onClick={() => setTodayHours(Math.max(0, todayHours - 0.5))} className="w-12 h-12 rounded-full p-0 flex items-center justify-center">
                 <Minus size={20} />
@@ -100,12 +100,12 @@ export function SleepDetailScreen() {
                 style={{ width: `${Math.min((todayHours / goalHours) * 100, 100)}%` }} />
             </div>
             <p className="text-caption text-[var(--color-mid-dark)]">
-              {todayHours >= goalHours ? t.fitness.goalReached : `${(goalHours - todayHours).toFixed(1)}h ${t.fitness.toGoal}`}
+              {todayHours >= goalHours ? t.goals.goalReached : `${(goalHours - todayHours).toFixed(1)}h ${t.goals.toGoal}`}
             </p>
           </div>
         </Card>
 
-        <h6 className="mb-4">{t.fitness.thisWeek}</h6>
+        <h6 className="mb-4">{t.goals.thisWeek}</h6>
         <Card className="mb-6 p-6">
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={weekData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
@@ -121,12 +121,12 @@ export function SleepDetailScreen() {
           </ResponsiveContainer>
         </Card>
 
-        <h6 className="mb-4">{t.fitness.statistics}</h6>
+        <h6 className="mb-4">{t.goals.statistics}</h6>
         <div className="grid grid-cols-2 gap-3 mb-6">
           <Card className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Moon size={16} className="text-purple-500" />
-              <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.average}</p>
+              <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.average}</p>
             </div>
             <h5 className="text-[var(--color-darkest)]">{avgHours}h</h5>
             <p className="text-caption text-[var(--color-mid-dark)]">{t.analytics.perDay}</p>
@@ -134,10 +134,10 @@ export function SleepDetailScreen() {
           <Card className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Moon size={16} className="text-purple-500" />
-              <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.total}</p>
+              <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.total}</p>
             </div>
             <h5 className="text-[var(--color-darkest)]">{totalHours}h</h5>
-            <p className="text-caption text-[var(--color-mid-dark)]">{t.fitness.thisWeek}</p>
+            <p className="text-caption text-[var(--color-mid-dark)]">{t.goals.thisWeek}</p>
           </Card>
         </div>
       </div>

@@ -90,8 +90,8 @@ export const translations = {
       low: 'Aşağı',
       pending: 'Gözləyir',
     },
-    // Fitness Tracker
-    fitness: {
+    // Goals
+    goals: {
       title: 'Fitness İzləyici',
       subtitle: 'Gündəlik aktivliyinizi izləyin',
       todayActivity: 'Bugünkü aktivlik',
@@ -457,8 +457,8 @@ export const translations = {
       low: 'Low',
       pending: 'Pending',
     },
-    // Fitness Tracker
-    fitness: {
+    // Goals
+    goals: {
       title: 'Fitness Tracker',
       subtitle: 'Monitor your daily activity',
       todayActivity: "Today's Activity",
@@ -824,8 +824,8 @@ export const translations = {
       low: 'Плохо',
       pending: 'Ожидание',
     },
-    // Fitness Tracker
-    fitness: {
+    // Goals
+    goals: {
       title: 'Фитнес-трекер',
       subtitle: 'Отслеживайте вашу ежедневную активность',
       todayActivity: 'Активность сегодня',
@@ -865,6 +865,7 @@ export const translations = {
       medium: 'Среднее',
       high: 'Высокое',
       stressLevel: 'Уровень Стресса',
+      total: 'Итого',
     },
     // Meal Tracker (minimal - only used fields kept)
     meals: {
