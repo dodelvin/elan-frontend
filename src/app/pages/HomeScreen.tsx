@@ -92,7 +92,11 @@ export function HomeScreen() {
           {(overview?.quickStats || []).map((stat) => {
             const { icon: Icon, color } = STAT_ICONS[stat.key] || { icon: Activity, color: '#400101' };
             return (
-              <Card key={stat.key} className="flex flex-col items-center text-center py-4">
+              <Card
+                    key={stat.key}
+                    className="flex flex-col items-center text-center py-4 cursor-pointer"
+                    onClick={() => stat.key === 'steps' && navigate('/steps')}
+>
                 <div
                   className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
                   style={{ backgroundColor: color + '15' }}
