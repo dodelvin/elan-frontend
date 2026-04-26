@@ -123,6 +123,15 @@ export const translations = {
       fri: 'Cuma',
       sat: 'Şənb.',
       sun: 'Baz.',
+      setWellnessTargets: 'Sağlamlıq hədəflərini təyin edin',
+      dailyTarget: 'Gündəlik hədəf',
+      glassesPerDay: 'Gün ərzində stəkan',
+      hoursPerNight: 'Gecə başına saat',
+      minutesPerDay: 'Gün ərzində dəqiqə',
+      medium: 'Orta',
+      high: 'Yüksək',
+      stressLevel: 'Stress Səviyyəsi',
+      total: 'Toplam',
     },
     // Meal Tracker (minimal - only used fields kept)
     meals: {
@@ -354,6 +363,7 @@ export const translations = {
       meditation: 'Meditasiya',
       community: 'İcma',
       profile: 'Profil',
+      goals: 'Hədəflər',
     },
   },
   en: {
@@ -480,6 +490,15 @@ export const translations = {
       fri: 'Fri',
       sat: 'Sat',
       sun: 'Sun',
+      setWellnessTargets: 'Set your wellness targets',
+      dailyTarget: 'Daily target',
+      glassesPerDay: 'Glasses per day',
+      hoursPerNight: 'Hours per night',
+      minutesPerDay: 'Minutes per day',
+      medium: 'Medium',
+      high: 'High',
+      stressLevel: 'Stress Level',
+      total: 'Total',
     },
     // Meal Tracker (minimal - only used fields kept)
     meals: {
@@ -711,6 +730,7 @@ export const translations = {
       meditation: 'Meditation',
       community: 'Community',
       profile: 'Profile',
+      goals: 'Goals',
     },
   },
   ru: {
@@ -837,6 +857,14 @@ export const translations = {
       fri: 'Пт',
       sat: 'Сб',
       sun: 'Вс',
+      setWellnessTargets: 'Установите цели здоровья',
+      dailyTarget: 'Ежедневная цель',
+      glassesPerDay: 'Стаканов в день',
+      hoursPerNight: 'Часов за ночь',
+      minutesPerDay: 'Минут в день',
+      medium: 'Среднее',
+      high: 'Высокое',
+      stressLevel: 'Уровень Стресса',
     },
     // Meal Tracker (minimal - only used fields kept)
     meals: {
@@ -1068,6 +1096,7 @@ export const translations = {
       meditation: 'Медитация',
       community: 'Сообщество',
       profile: 'Профиль',
+      goals: 'Цели',
     },
   },
 };

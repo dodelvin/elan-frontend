@@ -35,7 +35,7 @@ export function SleepDetailScreen() {
       .catch(() => setLoaded(true));
     apiGet<AnalyticsResponse>('/api/analytics/weekly')
       .then((r) => setWeekHours(r.sleepData || []))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   // Debounced save when sleep changes.
@@ -48,7 +48,7 @@ export function SleepDetailScreen() {
         await apiPost('/api/metrics/today', { sleep: todayHours });
         setSavedFlash(true);
         setTimeout(() => setSavedFlash(false), 1000);
-      } catch {}
+      } catch { }
     }, 500);
   }, [todayHours, loaded]);
 
