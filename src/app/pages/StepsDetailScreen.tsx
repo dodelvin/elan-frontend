@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
 import { MobileLayout } from '../components/MobileLayout';
 import { Card } from '../components/Card';
 import { ChevronLeft, Activity, TrendingUp, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell } from 'recharts';
 import { apiGet } from '../lib/api';
+import { useState, useEffect } from 'react';
 import { subscribeToSteps } from '../lib/stepCounter';
 
 const [liveSteps, setLiveSteps] = useState(0);

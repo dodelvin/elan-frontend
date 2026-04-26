@@ -9,7 +9,7 @@
  * Implements user story US1.
  */
 
-import { useEffect, useState } from 'react';
+
 import { MobileLayout } from '../components/MobileLayout';
 import { Card } from '../components/Card';
 import { useNavigate } from 'react-router-dom';
@@ -17,11 +17,8 @@ import { Activity, Droplet, Moon, Smile, Brain, Heart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { apiGet } from '../lib/api';
+import { useEffect, useState } from 'react';
 import { subscribeToSteps } from '../lib/stepCounter';
-
-// inside the component:
-const [liveSteps, setLiveSteps] = useState(0);
-useEffect(() => subscribeToSteps(setLiveSteps), []);
 
 // Variables related to the API response shape from /api/metrics/home.
 interface HomeOverview {
@@ -53,6 +50,10 @@ export function HomeScreen() {
   // Display name + avatar letter come from the live Firebase user.
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'there';
   const avatarLetter = displayName.charAt(0).toUpperCase();
+
+  // inside the component:
+  const [liveSteps, setLiveSteps] = useState(0);
+  useEffect(() => subscribeToSteps(setLiveSteps), []);
 
   // Fetch the home overview on mount.
   useEffect(() => {
