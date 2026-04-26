@@ -45,6 +45,7 @@ export function TrackerScreen() {
   const [mindfulness, setMindfulness] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const navigate = useNavigate();
 
   // Variables related to mood selector options
   const moods = [
