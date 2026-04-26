@@ -92,7 +92,7 @@ export const translations = {
     },
     // Goals
     goals: {
-      title: 'Fitness İzləyici',
+      title: 'Hədəflər',
       subtitle: 'Gündəlik aktivliyinizi izləyin',
       todayActivity: 'Bugünkü aktivlik',
       steps: 'Addımlar',
@@ -358,7 +358,7 @@ export const translations = {
     // Bottom Navigation
     nav: {
       home: 'Ana səhifə',
-      fitness: 'Fitness',
+      fitness: 'Hədəflər',
       meals: 'Yeməklər',
       meditation: 'Meditasiya',
       community: 'İcma',
