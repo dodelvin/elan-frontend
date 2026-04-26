@@ -5,9 +5,8 @@ const config: CapacitorConfig = {
   appName: 'ÉLAN',
   webDir: 'dist',
   server: {
-    hostname: 'localhost',
-    androidScheme: 'https',
-    iosScheme: 'https'
+    url: 'https://elan-frontend.vercel.app',
+    cleartext: false
   }
 };
 
