@@ -48,6 +48,7 @@ export function TrackerScreen() {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const navigate = useNavigate();
   const [tracking, setTracking] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<string>('not started');
 
   // Variables related to mood selector options
   const moods = [
@@ -58,14 +59,17 @@ export function TrackerScreen() {
   ];
 
   const toggleTracking = async () => {
-  if (tracking) {
-    stopStepCounter();
-    setTracking(false);
-  } else {
-    const ok = await startStepCounter((total) => setSteps(total));
-    if (ok) setTracking(true);
-    else alert('Motion permission denied. Enable in Settings.');
-  }
+    if (tracking) {
+      stopStepCounter();
+      setTracking(false);
+    } else {
+      const ok = await startStepCounter(
+        (total) => setSteps(total),
+        (info) => setDebugInfo(info)
+      );
+      if (ok) setTracking(true);
+      else alert('Motion permission denied. Enable in iPhone Settings → Safari → Motion & Orientation Access');
+    }
 };
 
   // Load today's metrics on mount.
@@ -162,6 +166,9 @@ export function TrackerScreen() {
             >
               {tracking ? 'Stop' : 'Start tracking'}
             </Button>
+            <p className="text-caption text-[var(--color-mid-dark)] mt-2 text-center">
+  {debugInfo}
+</p>
           </div>
         </Card>
 
