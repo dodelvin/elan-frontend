@@ -32,7 +32,7 @@ export function SplashScreen() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-bg-primary)] max-w-[430px] mx-auto">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--color-primary)] via-[var(--color-primary-light)] to-[var(--color-bg-primary)] w-full max-w-[500px] sm:max-w-[430px] mx-auto">
       <div className="animate-pulse">
         <ElanLogo size="large" variant="light" />
       </div>

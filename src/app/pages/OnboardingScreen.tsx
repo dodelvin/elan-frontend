@@ -86,7 +86,7 @@ export function OnboardingScreen() {
   const Icon = step.icon;
 
   return (
-    <div className="min-h-screen flex flex-col max-w-[430px] mx-auto bg-[var(--color-lightest)] p-6">
+    <div className="min-h-screen flex flex-col w-full max-w-[500px] sm:max-w-[430px] mx-auto bg-[var(--color-lightest)] p-6">
       {/* Skip button — jumps straight to sign-up */}
       <div className="flex justify-end mb-8">
         <button
@@ -117,11 +117,10 @@ export function OnboardingScreen() {
         {onboardingSteps.map((_, index) => (
           <div
             key={index}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              index === currentStep
+            className={`h-2 rounded-full transition-all duration-300 ${index === currentStep
                 ? 'w-8 bg-[var(--color-primary)]'
                 : 'w-2 bg-[var(--color-light)]'
-            }`}
+              }`}
           />
         ))}
       </div>

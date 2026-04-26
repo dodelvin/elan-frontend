@@ -72,7 +72,7 @@ export function SignInScreen() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col max-w-[430px] mx-auto bg-[var(--color-lightest)] p-6">
+    <div className="min-h-screen flex flex-col w-full max-w-[500px] sm:max-w-[430px] mx-auto bg-[var(--color-lightest)] p-6">
       <div className="flex-1 flex flex-col justify-center">
         <div className="mb-12 text-center">
           <ElanLogo size="small" variant="dark" />

@@ -65,15 +65,15 @@ export function SignUpScreen() {
       const code = err?.code || '';
       let msg = err?.message || 'Sign-up failed';
       if (code === 'auth/email-already-in-use') msg = 'That email is already registered. Try signing in.';
-      if (code === 'auth/weak-password')        msg = 'Password should be at least 6 characters.';
-      if (code === 'auth/invalid-email')        msg = 'That email address looks invalid.';
+      if (code === 'auth/weak-password') msg = 'Password should be at least 6 characters.';
+      if (code === 'auth/invalid-email') msg = 'That email address looks invalid.';
       setErrorMessage(msg);
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col max-w-[430px] mx-auto bg-[var(--color-lightest)] p-6">
+    <div className="min-h-screen flex flex-col w-full max-w-[500px] sm:max-w-[430px] mx-auto bg-[var(--color-lightest)] p-6">
       <div className="flex-1 flex flex-col justify-center">
         <div className="mb-12 text-center">
           <ElanLogo size="small" variant="dark" />

@@ -26,7 +26,7 @@ export function WelcomeScreen() {
   const { t } = useLanguage();
 
   return (
-    <div className="min-h-screen flex flex-col max-w-[430px] mx-auto bg-[var(--color-lightest)]">
+    <div className="min-h-screen flex flex-col w-full max-w-[500px] sm:max-w-[430px] mx-auto bg-[var(--color-lightest)]">
       <div className="flex-1 flex flex-col justify-center px-6 pb-8">
         <div className="text-center mb-12">
           <ElanLogo size="default" variant="dark" />

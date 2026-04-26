@@ -44,7 +44,7 @@ export function MobileLayout({ children, showNav = true }: MobileLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col max-w-[430px] mx-auto bg-[var(--color-lightest)]">
+    <div className="min-h-screen flex flex-col w-full max-w-[500px] sm:max-w-[430px] mx-auto bg-[var(--color-lightest)]">
       {/* Main content area — pb-20 leaves space for the fixed nav bar */}
       <div className={`flex-1 overflow-y-auto ${showNav ? 'pb-20' : ''}`}>
         {children}
@@ -52,7 +52,7 @@ export function MobileLayout({ children, showNav = true }: MobileLayoutProps) {
 
       {/* Fixed bottom navigation, only rendered if showNav is true */}
       {showNav && (
-        <div className="fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto bg-[var(--color-lightest)] border-t border-[var(--color-light)] px-4 py-3 safe-bottom">
+        <div className="fixed bottom-0 left-0 right-0 w-full max-w-[500px] sm:max-w-[430px] mx-auto ...">
           <div className="flex justify-around items-center">
             {navItems.map((item) => {
               const Icon = item.icon;
