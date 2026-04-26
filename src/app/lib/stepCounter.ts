@@ -1,14 +1,11 @@
 /**
- * stepCounter.ts
- * --------------
- * Always-on step counter using device motion. Single shared instance —
- * starts on first call to ensureStarted(), keeps counting until the page
- * is closed. iOS requires explicit user gesture for permission, so
- * ensureStarted() must be called from a click handler.
+ * Always-on step counter using device motion. Subscribes are listeners,
+ * one shared count. ensureStarted() must be called from a user gesture
+ * on iOS for permission.
  */
 
-const STEP_THRESHOLD = 13; // acceleration magnitude threshold to count a step (tuned experimentally)
-const MIN_STEP_INTERVAL_MS = 700; // minimum time between steps to prevent double-counting (tuned experimentally)
+const STEP_THRESHOLD = 13;
+const MIN_STEP_INTERVAL_MS = 700;
 
 let started = false;
 let lastStepAt = 0;
@@ -27,14 +24,12 @@ function handleMotion(e: DeviceMotionEvent) {
   }
 }
 
-/** Subscribe to step updates. Returns an unsubscribe function. */
 export function subscribeToSteps(cb: (total: number) => void): () => void {
   listeners.add(cb);
-  cb(stepCount);  // immediately give current value
-  return () => listeners.delete(cb);
+  cb(stepCount);
+  return () => { listeners.delete(cb); };
 }
 
-/** Must be called from a user gesture on iOS to grant permission. */
 export async function ensureStarted(): Promise<boolean> {
   if (started) return true;
   const DM = (DeviceMotionEvent as any);
@@ -42,15 +37,12 @@ export async function ensureStarted(): Promise<boolean> {
     try {
       const result = await DM.requestPermission();
       if (result !== 'granted') return false;
-    } catch {
-      return false;
-    }
+    } catch { return false; }
   }
   window.addEventListener('devicemotion', handleMotion);
   started = true;
   return true;
 }
 
-export function getStepCount(): number {
-  return stepCount;
-}
+export function getStepCount(): number { return stepCount; }
+export function resetStepCount() { stepCount = 0; }
