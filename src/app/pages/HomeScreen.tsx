@@ -4,13 +4,15 @@ import { Card } from '../components/Card';
 import { useNavigate } from 'react-router-dom';
 import { Activity, Droplet, Moon, Smile, Brain, Heart, TrendingUp, Award } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useGoals } from '../lib/useGoals';
 
 export function HomeScreen() {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [goals, saveGoals] = useGoals();
 
   const quickStats = [
-    { icon: Activity, label: t.dashboard.steps, value: '8,547', target: '10,000', color: '#400101' },
+    { icon: Activity, label: t.dashboard.steps, value: '8,547', target: goals.stepsGoal.toLocaleString(), color: '#400101' },
     { icon: Droplet, label: t.dashboard.water, value: '6/8', target: t.dashboard.glasses, color: '#7E6961' },
     { icon: Moon, label: t.dashboard.sleep, value: '7.5h', target: '8h', color: '#B2A5A0' },
     { icon: Smile, label: t.dashboard.mood, value: t.dashboard.great, target: '', color: '#400101' }
@@ -57,7 +59,10 @@ export function HomeScreen() {
             const isClickable = isSteps || isWater || isSleep || isMood;
 
             const handleClick = () => {
-              if (isSteps) navigate('/steps');
+              if (isSteps) {
+                saveGoals({ stepsGoal: goals.stepsGoal + 1000 });
+                return;
+              }
               if (isWater) navigate('/water');
               if (isSleep) navigate('/sleep');
               if (isMood) navigate('/mood');
@@ -69,7 +74,7 @@ export function HomeScreen() {
                 className={`flex flex-col items-center text-center py-4 ${isClickable ? 'cursor-pointer hover:shadow-md transition-shadow' : ''}`}
                 onClick={handleClick}
               >
-                <div 
+                <div
                   className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
                   style={{ backgroundColor: stat.color + '15' }}
                 >
