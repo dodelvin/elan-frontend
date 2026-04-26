@@ -15,7 +15,7 @@ import { SignUpScreen } from "./pages/SignUpScreen";
 import { SignInScreen } from "./pages/SignInScreen";
 import { HomeScreen } from "./pages/HomeScreen";
 import { TrackerScreen } from "./pages/TrackerScreen";
-import { MealTrackerScreen } from "./pages/MealTrackerScreen";
+// import { MealTrackerScreen } from "./pages/MealTrackerScreen";
 import { WorkoutScreen } from "./pages/WorkoutScreen";
 import { MeditationScreen } from "./pages/MeditationScreen";
 import { AnalyticsScreen } from "./pages/AnalyticsScreen";
@@ -53,7 +53,6 @@ export default function App() {
 
               <Route path="/home"        element={<P><HomeScreen /></P>} />
               <Route path="/tracker"     element={<P><TrackerScreen /></P>} />
-              <Route path="/meals"       element={<P><MealTrackerScreen /></P>} />
               <Route path="/workout"     element={<P><WorkoutScreen /></P>} />
               <Route path="/meditation"  element={<P><MeditationScreen /></P>} />
               <Route path="/meditation/:sessionId" element={<P><MeditationSessionScreen /></P>} />
