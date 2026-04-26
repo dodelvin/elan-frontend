@@ -15,6 +15,7 @@ import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { apiGet, apiPost } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
+import { startStepCounter, stopStepCounter } from '../lib/stepCounter';
 
 type Mood = 'great' | 'good' | 'okay' | 'low' | null;
 
@@ -46,6 +47,7 @@ export function TrackerScreen() {
   const [loaded, setLoaded] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const navigate = useNavigate();
+  const [tracking, setTracking] = useState(false);
 
   // Variables related to mood selector options
   const moods = [
@@ -54,6 +56,17 @@ export function TrackerScreen() {
     { value: 'okay'  as const, emoji: '😐', label: t.dashboard.okay  },
     { value: 'low'   as const, emoji: '😔', label: t.dashboard.low   }
   ];
+
+  const toggleTracking = async () => {
+  if (tracking) {
+    stopStepCounter();
+    setTracking(false);
+  } else {
+    const ok = await startStepCounter((total) => setSteps(total));
+    if (ok) setTracking(true);
+    else alert('Motion permission denied. Enable in Settings.');
+  }
+};
 
   // Load today's metrics on mount.
   useEffect(() => {
@@ -142,9 +155,13 @@ export function TrackerScreen() {
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <Button variant="outline" onClick={() => setSteps(Math.max(0, steps - 100))}><Minus size={16} /></Button>
             <p className="text-h5">{steps.toLocaleString()}</p>
-            <Button variant="outline" onClick={() => setSteps(steps + 100)}><Plus size={16} /></Button>
+            <Button
+              variant={tracking ? 'outline' : 'primary'}
+              onClick={toggleTracking}
+            >
+              {tracking ? 'Stop' : 'Start tracking'}
+            </Button>
           </div>
         </Card>
 
