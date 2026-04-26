@@ -459,7 +459,7 @@ export const translations = {
     },
     // Goals
     goals: {
-      title: 'Fitness Tracker',
+      title: 'Goals',
       subtitle: 'Monitor your daily activity',
       todayActivity: "Today's Activity",
       steps: 'Steps',
