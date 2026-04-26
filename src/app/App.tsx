@@ -46,6 +46,7 @@ import { ShopScreen } from "./pages/ShopScreen";
 import { SettingsScreen } from "./pages/SettingsScreen";
 import { HelpScreen } from "./pages/HelpScreen";
 import { ProfileScreen } from "./pages/ProfileScreen";
+import { StepsDetailScreen } from "./pages/StepsDetailScreen";
 
 // Settings sub-screens
 import { LanguageSelectionScreen } from "./pages/LanguageSelectionScreen";
@@ -87,6 +88,7 @@ export default function App() {
               <Route path="/settings"    element={<ProtectedRoute><SettingsScreen /></ProtectedRoute>} />
               <Route path="/help"        element={<ProtectedRoute><HelpScreen /></ProtectedRoute>} />
               <Route path="/profile"     element={<ProtectedRoute><ProfileScreen /></ProtectedRoute>} />
+              <Route path="/steps" element={<ProtectedRoute><StepsDetailScreen /></ProtectedRoute>} />
 
               {/* Settings sub-screens — also protected */}
               <Route path="/language"      element={<ProtectedRoute><LanguageSelectionScreen /></ProtectedRoute>} />

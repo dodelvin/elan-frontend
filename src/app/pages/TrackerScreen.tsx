@@ -14,6 +14,7 @@ import { Activity, Droplet, Moon, Brain, Plus, Minus } from 'lucide-react';
 import { Button } from '../components/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { apiGet, apiPost } from '../lib/api';
+import { useNavigate } from 'react-router-dom';
 
 type Mood = 'great' | 'good' | 'okay' | 'low' | null;
 
@@ -127,7 +128,7 @@ export function TrackerScreen() {
         </Card>
 
         {/* Steps */}
-        <Card className="mb-4">
+        <Card className="mb-4 cursor-pointer" onClick={() => navigate('/steps')}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
