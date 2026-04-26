@@ -52,7 +52,7 @@ export function MobileLayout({ children, showNav = true }: MobileLayoutProps) {
 
       {/* Fixed bottom navigation, only rendered if showNav is true */}
       {showNav && (
-        <div className="fixed bottom-0 left-0 right-0 w-full max-w-[500px] sm:max-w-[430px] mx-auto bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.08)] border-t border-[var(--color-lighter)] px-4 py-3 safe-bottom">
+        <div className="fixed bottom-0 left-0 right-0 w-full max-w-[500px] sm:max-w-[430px] mx-auto bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.08)] border-t border-[var(--color-lighter)] px-4 py-2 safe-bottom">
           <div className="flex justify-around items-center">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -62,10 +62,10 @@ export function MobileLayout({ children, showNav = true }: MobileLayoutProps) {
                 <button
                   key={item.path}
                   onClick={() => navigate(item.path)}
-                  className="flex flex-col items-center gap-1 transition-colors"
+                  className="flex flex-col items-center gap-0.5 transition-colors"
                 >
                   <Icon
-                    size={24}
+                    size={22}
                     className={isActive ? 'text-[var(--color-primary)]' : 'text-[var(--color-mid-dark)]'}
                     strokeWidth={isActive ? 2.5 : 2}
                   />
