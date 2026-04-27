@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { MobileLayout } from '../components/MobileLayout';
-import { Card } from '../components/Card';
-import { ChevronLeft, Smile } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Smile } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Cell } from 'recharts';
+
+import { MobileLayout } from '../components/MobileLayout';
+import { BackButton } from '../components/BackButton';
+import { Card } from '../components/Card';
 import { apiGet, apiPost } from '../lib/api';
 
 type Mood = 'great' | 'good' | 'okay' | 'low';
@@ -14,7 +15,6 @@ interface MetricsResponse {
 }
 
 export function MoodDetailScreen() {
-  const navigate = useNavigate();
   const { t } = useLanguage();
 
   const [todayMood, setTodayMood] = useState<Mood | null>(null);
@@ -42,43 +42,38 @@ export function MoodDetailScreen() {
   }, [todayMood, loaded]);
 
   const moods = [
-    { value: 'great' as const, emoji: '😊', label: t.dashboard.great },
-    { value: 'good'  as const, emoji: '🙂', label: t.dashboard.good  },
-    { value: 'okay'  as const, emoji: '😐', label: t.dashboard.okay  },
-    { value: 'low'   as const, emoji: '😔', label: t.dashboard.low   }
+    { value: 'great' as const, emoji: '😊', label: 'Great' },
+    { value: 'good'  as const, emoji: '🙂', label: 'Good'  },
+    { value: 'okay'  as const, emoji: '😐', label: 'Normal' },
+    { value: 'low'   as const, emoji: '😔', label: 'Bad'   }
   ];
 
   const stressLevels = [
-    { value: 'low' as const,    label: t.dashboard.low    },
-    { value: 'medium' as const, label: t.goals.medium   },
-    { value: 'high' as const,   label: t.goals.high     }
+    { value: 'low' as const,    label: 'Low'    },
+    { value: 'medium' as const, label: 'Medium' },
+    { value: 'high' as const,   label: 'High'   }
   ];
 
-  // Static-ish week chart placeholder; keeps the visual without faking
-  // numbers that drift weirdly. Backend doesn't currently expose mood per day.
+  // Mood scale: 1=Bad, 2=Normal, 3=Good, 4=Great
   const moodToValue: Record<Mood, number> = { low: 1, okay: 2, good: 3, great: 4 };
   const todayValue = todayMood ? moodToValue[todayMood] : 0;
+
   const weekData = [
-    { id: 'mon', day: t.goals.mon, moodValue: 3, date: '20' },
-    { id: 'tue', day: t.goals.tue, moodValue: 4, date: '21' },
-    { id: 'wed', day: t.goals.wed, moodValue: 2, date: '22' },
-    { id: 'thu', day: t.goals.thu, moodValue: 4, date: '23' },
-    { id: 'fri', day: t.goals.fri, moodValue: 4, date: '24' },
-    { id: 'sat', day: t.goals.sat, moodValue: 3, date: '25' },
-    { id: 'sun', day: t.goals.sun, moodValue: todayValue || 4, date: '26' }
+    { id: 'mon', day: 'Mon', moodValue: 3, date: '20' },
+    { id: 'tue', day: 'Tue', moodValue: 4, date: '21' },
+    { id: 'wed', day: 'Wed', moodValue: 2, date: '22' },
+    { id: 'thu', day: 'Thu', moodValue: 4, date: '23' },
+    { id: 'fri', day: 'Fri', moodValue: 4, date: '24' },
+    { id: 'sat', day: 'Sat', moodValue: 3, date: '25' },
+    { id: 'sun', day: 'Sun', moodValue: todayValue || 4, date: '26' }
   ];
 
+  const moodLabels = ['', 'Bad', 'Normal', 'Good', 'Great'];
   const getMoodColor = (v: number) => v >= 4 ? '#22c55e' : v >= 3 ? '#84cc16' : v >= 2 ? '#eab308' : '#f97316';
 
   return (
     <MobileLayout showNav={false}>
-      <div className="fixed top-0 left-0 right-0 max-w-[430px] mx-auto bg-[var(--color-lightest)] z-10 px-6 pt-12 pb-4 flex items-center justify-between">
-        <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-[var(--color-dark)]">
-          <ChevronLeft size={20} />
-          <span className="text-body1">{t.common.back}</span>
-        </button>
-        {savedFlash && <span className="text-caption text-green-600">✓ Saved</span>}
-      </div>
+      <BackButton rightSlot={savedFlash ? <span className="text-caption text-green-600">✓ Saved</span> : null} />
 
       <div className="px-6 pt-24 pb-24">
         <div className="flex items-center gap-3 mb-6">
@@ -91,7 +86,7 @@ export function MoodDetailScreen() {
           </div>
         </div>
 
-        <h6 className="mb-4">{t.goals.today}</h6>
+        <h6 className="mb-4">{t.fitness.today}</h6>
         <Card className="mb-4">
           <h6 className="mb-4">{t.dashboard.mood}</h6>
           <div className="grid grid-cols-4 gap-2">
@@ -108,7 +103,7 @@ export function MoodDetailScreen() {
         </Card>
 
         <Card className="mb-6">
-          <h6 className="mb-4">{t.goals.stressLevel}</h6>
+          <h6 className="mb-4">Stress Level</h6>
           <div className="grid grid-cols-3 gap-2">
             {stressLevels.map((level) => (
               <button key={level.value} onClick={() => setTodayStress(level.value)}
@@ -121,15 +116,15 @@ export function MoodDetailScreen() {
           </div>
         </Card>
 
-        <h6 className="mb-4">{t.goals.thisWeek}</h6>
+        <h6 className="mb-4">This Week</h6>
         <Card className="mb-6 p-6">
           <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={weekData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+            <BarChart data={weekData} margin={{ top: 10, right: 0, left: -10, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--color-lighter)" vertical={false} />
               <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: 'var(--color-mid-dark)', fontSize: 12 }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-mid-dark)', fontSize: 12 }}
+              <YAxis axisLine={false} tickLine={false} tick={{ fill: 'var(--color-mid-dark)', fontSize: 11 }}
                 domain={[0, 4]} ticks={[0, 1, 2, 3, 4]}
-                tickFormatter={(v) => ['', t.dashboard.low, t.dashboard.okay, t.dashboard.good, t.dashboard.great][v] || ''} />
+                tickFormatter={(v) => moodLabels[v] || ''} />
               <Bar dataKey="moodValue" radius={[8, 8, 0, 0]} barSize={32}>
                 {weekData.map((e) => <Cell key={`cell-${e.id}`} fill={getMoodColor(e.moodValue)} />)}
               </Bar>
