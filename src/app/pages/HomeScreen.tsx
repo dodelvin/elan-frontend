@@ -11,6 +11,7 @@ export function HomeScreen() {
   const { t } = useLanguage();
   const [goals, saveGoals] = useGoals();
 
+  
   const quickStats = [
     { icon: Activity, label: t.dashboard.steps, value: '8,547', target: goals.stepsGoal.toLocaleString(), color: '#400101' },
     { icon: Droplet, label: t.dashboard.water, value: '6/8', target: t.dashboard.glasses, color: '#7E6961' },
