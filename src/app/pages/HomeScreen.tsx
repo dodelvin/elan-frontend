@@ -8,6 +8,7 @@ import { useGoals } from '../lib/useGoals';
 import { useAuth } from '../contexts/AuthContext';
 import { useEffect, useState } from 'react';
 import { apiGet } from '../lib/api';
+import { subscribeToSteps } from '../lib/stepCounter';
 
 export function HomeScreen() {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ export function HomeScreen() {
   const { user } = useAuth();
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'there';
   const avatarLetter = displayName.charAt(0).toUpperCase();
+  const [liveSteps, setLiveSteps] = useState(0);
+  useEffect(() => subscribeToSteps(setLiveSteps), []);
 
   // Today's metrics from /api/metrics/today
   const [todayMetrics, setTodayMetrics] = useState({
@@ -44,7 +47,7 @@ export function HomeScreen() {
     : '—';
 
   const quickStats = [
-    { icon: Activity, label: t.dashboard.steps, value: todayMetrics.steps.toLocaleString(), color: '#400101' },
+    { icon: Activity, label: t.dashboard.steps, value: (liveSteps || todayMetrics.steps).toLocaleString(), color: '#400101' },
     { icon: Droplet, label: t.dashboard.water, value: `${todayMetrics.water}/${goals.waterGoal}`, color: '#7E6961' },
     { icon: Moon, label: t.dashboard.sleep, value: `${todayMetrics.sleep}h`, color: '#B2A5A0' },
     { icon: Smile, label: t.dashboard.mood, value: moodLabel, color: '#400101' }
