@@ -173,7 +173,7 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* Featured Card */}
+      {/* Featured Card
       <section className="px-6 mb-6">
         <h6 className="mb-4">{t.meditation.title}</h6>
         <Card>
@@ -185,7 +185,7 @@ export function HomeScreen() {
             {t.dashboard.startWorkout} →
           </button>
         </Card>
-      </section>
+      </section> */}
     </MobileLayout>
   );
 }
