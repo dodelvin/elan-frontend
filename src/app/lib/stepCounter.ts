@@ -4,9 +4,9 @@
  * on iOS for permission.
  */
 
-const STEP_THRESHOLD = 9;
+const STEP_THRESHOLD = 5;
 const MIN_STEP_INTERVAL_MS = 250;
-const MIN_HORIZONTAL_RATIO = 0.2;
+const MIN_HORIZONTAL_RATIO = 0.7;
 
 let started = false;
 let lastStepAt = 0;
