@@ -1,19 +1,9 @@
-/**
- * MeditationSessionScreen.tsx
- * ---------------------------
- * Two modes:
- *   - Breathing sessions (1, 2): full-screen animated circle that pulses
- *     in sync with a 4-4-4-4 box breathing rhythm. Ambient audio loops
- *     in the background.
- *   - Other sessions (3-7): full-screen video player.
- *
- * Auto-detects which mode based on the session's category.
- */
-
-import { useEffect, useRef, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { X } from 'lucide-react';
 import { MobileLayout } from '../components/MobileLayout';
+import { Card } from '../components/Card';
+import { Button } from '../components/Button';
+import { Play, Pause, SkipBack, SkipForward, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface MeditationSession {
@@ -22,60 +12,132 @@ interface MeditationSession {
   duration: string;
   description: string;
   category: string;
-  videoUrl?: string;
+  audioUrl: string;
 }
-
-// Replace these with your actual Firebase Storage URLs when ready.
-const SAMPLE_VIDEO = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/mp4/DesigningForGoogleCast.mp4';
-
-// Ambient track for breathing sessions. Replace with a calmer track later.
-const AMBIENT_AUDIO = 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_1718e49cdb.mp3';
-
-const sessions: Record<number, MeditationSession> = {
-  1: { id: 1, title: 'Focus Boost',     duration: '3:00',  description: 'Quick breathing exercise to enhance focus and clarity', category: 'Breathing' },
-  2: { id: 2, title: 'Instant Calm',    duration: '3:00',  description: 'Rapid relaxation through controlled breathing',         category: 'Breathing' },
-  3: { id: 3, title: 'Calming Taps',    duration: '4:00',  description: 'Gentle tapping meditation for stress relief',           category: 'Basic Meditation',   videoUrl: SAMPLE_VIDEO },
-  4: { id: 4, title: 'Anxiety Relief',  duration: '4:00',  description: 'Soothing meditation to ease anxiety and worry',         category: 'Basic Meditation',   videoUrl: SAMPLE_VIDEO },
-  5: { id: 5, title: 'Body Scan',       duration: '4:00',  description: 'Systematic body awareness and relaxation',              category: 'Basic Meditation',   videoUrl: SAMPLE_VIDEO },
-  6: { id: 6, title: 'Moving Focus',    duration: '3:00',  description: 'Train your attention through guided focus shifts',      category: 'Attention Training', videoUrl: SAMPLE_VIDEO },
-  7: { id: 7, title: 'Active Listening', duration: '10:00', description: 'Develop deep listening skills and presence',            category: 'Attention Training', videoUrl: SAMPLE_VIDEO }
-};
-
-// Box breathing: 4 seconds inhale, 4 hold, 4 exhale, 4 hold = 16s cycle
-type Phase = 'inhale' | 'hold-in' | 'exhale' | 'hold-out';
-const PHASE_DURATION = 4000;
 
 export function MeditationSessionScreen() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
-
-  const session = sessions[parseInt(sessionId || '1', 10)];
-  const isBreathing = session?.category === 'Breathing';
-
-  const [phase, setPhase] = useState<Phase>('inhale');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Drive the breathing phase cycle for breathing sessions only.
-  useEffect(() => {
-    if (!isBreathing) return;
-    const phases: Phase[] = ['inhale', 'hold-in', 'exhale', 'hold-out'];
-    let i = 0;
-    const tick = setInterval(() => {
-      i = (i + 1) % phases.length;
-      setPhase(phases[i]);
-    }, PHASE_DURATION);
-    return () => clearInterval(tick);
-  }, [isBreathing]);
-
-  // Start ambient audio on entry. iOS may block autoplay until user gesture.
-  useEffect(() => {
-    if (!isBreathing) return;
-    if (audioRef.current) {
-      audioRef.current.volume = 0.4;
-      audioRef.current.play().catch(() => {/* iOS will require tap */});
+  const sessions: Record<number, MeditationSession> = {
+    1: {
+      id: 1,
+      title: 'Focus Boost',
+      duration: '3:00',
+      description: 'Quick breathing exercise to enhance focus and clarity',
+      category: 'Breathing',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+    },
+    2: {
+      id: 2,
+      title: 'Instant Calm',
+      duration: '3:00',
+      description: 'Rapid relaxation through controlled breathing',
+      category: 'Breathing',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+    },
+    3: {
+      id: 3,
+      title: 'Calming Taps',
+      duration: '4:00',
+      description: 'Gentle tapping meditation for stress relief',
+      category: 'Basic Meditation',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+    },
+    4: {
+      id: 4,
+      title: 'Anxiety Relief',
+      duration: '4:00',
+      description: 'Soothing meditation to ease anxiety and worry',
+      category: 'Basic Meditation',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
+    },
+    5: {
+      id: 5,
+      title: 'Body Scan',
+      duration: '4:00',
+      description: 'Systematic body awareness and relaxation',
+      category: 'Basic Meditation',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+    },
+    6: {
+      id: 6,
+      title: 'Moving Focus',
+      duration: '3:00',
+      description: 'Train your attention through guided focus shifts',
+      category: 'Attention Training',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+    },
+    7: {
+      id: 7,
+      title: 'Active Listening',
+      duration: '10:00',
+      description: 'Develop deep listening skills and presence',
+      category: 'Attention Training',
+      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
     }
-  }, [isBreathing]);
+  };
+
+  const session = sessions[parseInt(sessionId || '1')];
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.addEventListener('loadedmetadata', () => {
+        setDuration(audioRef.current?.duration || 0);
+      });
+
+      audioRef.current.addEventListener('timeupdate', () => {
+        setCurrentTime(audioRef.current?.currentTime || 0);
+      });
+
+      audioRef.current.addEventListener('ended', () => {
+        setIsPlaying(false);
+        setCurrentTime(0);
+      });
+    }
+  }, []);
+
+  const togglePlayPause = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const skipForward = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.min(audioRef.current.currentTime + 10, duration);
+    }
+  };
+
+  const skipBackward = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = Math.max(audioRef.current.currentTime - 10, 0);
+    }
+  };
+
+  const formatTime = (timeInSeconds: number) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTime = parseFloat(e.target.value);
+    if (audioRef.current) {
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  };
 
   if (!session) {
     return (
@@ -87,109 +149,81 @@ export function MeditationSessionScreen() {
     );
   }
 
-  // Variables related to the breathing animation
-  const phaseLabel: Record<Phase, string> = {
-    'inhale':   'Breathe in',
-    'hold-in':  'Hold',
-    'exhale':   'Breathe out',
-    'hold-out': 'Hold'
-  };
-
-  // Circle scale per phase. Inhale grows, exhale shrinks, holds stay.
-  const phaseScale: Record<Phase, number> = {
-    'inhale':   1.4,
-    'hold-in':  1.4,
-    'exhale':   0.7,
-    'hold-out': 0.7
-  };
-
-  // Tap once to bypass iOS audio block (some devices require an explicit tap)
-  const handleScreenTap = () => {
-    if (audioRef.current && audioRef.current.paused) {
-      audioRef.current.play().catch(() => {});
-    }
-  };
-
-  // === BREATHING MODE ===
-  if (isBreathing) {
-    return (
-      <div
-        className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden"
-        style={{
-          background: 'radial-gradient(circle at center, #5C0202 0%, #2A0000 100%)'
-        }}
-        onClick={handleScreenTap}
-      >
-        {/* Close button */}
-        <button
-          onClick={(e) => { e.stopPropagation(); navigate('/meditation'); }}
-          className="absolute top-12 right-4 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/20 transition-colors"
-        >
-          <X size={22} />
-        </button>
-
-        {/* Title strip */}
-        <div className="absolute top-12 left-4 z-10 max-w-[70%] text-white">
-          <p className="text-caption opacity-70">{session.category}</p>
-          <h6>{session.title}</h6>
+  return (
+    <MobileLayout showNav={false}>
+      <div className="min-h-screen bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)] text-white flex flex-col">
+        {/* Header */}
+        <div className="p-6 flex items-center justify-between">
+          <button onClick={() => navigate('/meditation')} className="p-2">
+            <X size={24} />
+          </button>
         </div>
 
-        {/* Animated breathing circle */}
-        <div
-          className="rounded-full"
-          style={{
-            width: '220px',
-            height: '220px',
-            background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(255,255,255,0.05))',
-            boxShadow: '0 0 80px 20px rgba(255,255,255,0.15)',
-            transform: `scale(${phaseScale[phase]})`,
-            transition: `transform ${PHASE_DURATION}ms ease-in-out`
-          }}
-        />
+        {/* Content */}
+        <div className="flex-1 flex flex-col items-center justify-center px-6">
+          <p className="text-subtitle2 opacity-80 mb-2">{session.category}</p>
+          <h4 className="mb-4 text-center">{session.title}</h4>
+          <p className="text-body1 text-center opacity-90 mb-8 max-w-sm">
+            {session.description}
+          </p>
 
-        {/* Phase label */}
-        <p
-          className="text-white text-2xl mt-12 tracking-wide"
-          style={{ opacity: 0.9 }}
-        >
-          {phaseLabel[phase]}
-        </p>
+          {/* Animated Circle */}
+          <div className="relative w-48 h-48 mb-12">
+            <div className={`absolute inset-0 rounded-full bg-white/20 flex items-center justify-center ${isPlaying ? 'animate-pulse' : ''}`}>
+              <button
+                onClick={togglePlayPause}
+                className="w-20 h-20 rounded-full bg-white flex items-center justify-center transition-transform hover:scale-110"
+              >
+                {isPlaying ? (
+                  <Pause size={32} className="text-[var(--color-primary)]" />
+                ) : (
+                  <Play size={32} className="text-[var(--color-primary)] ml-1" />
+                )}
+              </button>
+            </div>
+          </div>
 
-        {/* Hint that fades after a few seconds */}
-        <p className="text-white/40 text-caption mt-8 text-center px-8">
-          Follow the circle. Inhale as it grows, exhale as it shrinks.
-        </p>
+          {/* Progress Bar */}
+          <div className="w-full max-w-sm mb-4">
+            <input
+              type="range"
+              min="0"
+              max={duration || 100}
+              value={currentTime}
+              onChange={handleSeek}
+              className="w-full h-1 bg-white/30 rounded-lg appearance-none cursor-pointer"
+              style={{
+                background: `linear-gradient(to right, white ${(currentTime / (duration || 1)) * 100}%, rgba(255,255,255,0.3) ${(currentTime / (duration || 1)) * 100}%)`
+              }}
+            />
+          </div>
 
-        {/* Ambient audio loop */}
-        <audio ref={audioRef} src={AMBIENT_AUDIO} loop preload="auto" />
+          {/* Time Display */}
+          <div className="flex justify-between w-full max-w-sm mb-8 text-subtitle2 opacity-80">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+
+          {/* Controls */}
+          <div className="flex items-center gap-8">
+            <button
+              onClick={skipBackward}
+              className="p-3 hover:bg-white/10 rounded-full transition-colors"
+            >
+              <SkipBack size={28} />
+            </button>
+            <button
+              onClick={skipForward}
+              className="p-3 hover:bg-white/10 rounded-full transition-colors"
+            >
+              <SkipForward size={28} />
+            </button>
+          </div>
+        </div>
+
+        {/* Hidden Audio Element */}
+        <audio ref={audioRef} src={session.audioUrl} preload="metadata" />
       </div>
-    );
-  }
-
-  // === VIDEO MODE ===
-  return (
-    <div className="fixed inset-0 z-50 bg-black flex flex-col">
-      <button
-        onClick={() => navigate('/meditation')}
-        className="absolute top-12 right-4 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white hover:bg-black/70 transition-colors"
-      >
-        <X size={22} />
-      </button>
-
-      <div className="absolute top-12 left-4 z-10 max-w-[70%]">
-        <p className="text-caption text-white/70">{session.category}</p>
-        <h6 className="text-white">{session.title}</h6>
-      </div>
-
-      <video
-        src={session.videoUrl}
-        controls
-        playsInline
-        preload="metadata"
-        className="w-full h-full object-contain bg-black"
-      >
-        Your browser does not support video playback.
-      </video>
-    </div>
+    </MobileLayout>
   );
 }
