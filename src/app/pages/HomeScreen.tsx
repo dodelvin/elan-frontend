@@ -173,19 +173,19 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* Featured Card
+      {/* Featured Card */}
       <section className="px-6 mb-6">
         <h6 className="mb-4">{t.meditation.title}</h6>
         <Card>
-          <h6 className="mb-2">{t.meditation.sleepMeditation}</h6>
+          <h6 className="mb-2">{t.meditation.breathingDesc}</h6>
           <p className="text-body2 text-[var(--color-mid-dark)] mb-3">
-            {t.meditation.sleepDesc}
+            {t.meditation.breathingDesc}
           </p>
           <button className="text-subtitle2 text-[var(--color-primary)] hover:underline">
-            {t.dashboard.startWorkout} →
+            {t.dashboard.meditate} →
           </button>
         </Card>
-      </section> */}
+      </section>
     </MobileLayout>
   );
 }
