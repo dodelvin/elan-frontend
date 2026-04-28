@@ -4,8 +4,9 @@
  * on iOS for permission.
  */
 
-const STEP_THRESHOLD = 13;
-const MIN_STEP_INTERVAL_MS = 700;
+const STEP_THRESHOLD = 12;
+const MIN_STEP_INTERVAL_MS = 400;
+const MIN_HORIZONTAL_RATIO = 0.4;
 
 let started = false;
 let lastStepAt = 0;
@@ -13,9 +14,20 @@ let stepCount = 0;
 const listeners = new Set<(total: number) => void>();
 
 function handleMotion(e: DeviceMotionEvent) {
-  const a = e.accelerationIncludingGravity;
+  // Use acceleration WITHOUT gravity so a still phone reads ~0 on all axes.
+  const a = e.acceleration || e.accelerationIncludingGravity;
   if (!a || a.x == null || a.y == null || a.z == null) return;
-  const magnitude = Math.sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+
+  const ax = Math.abs(a.x);
+  const ay = Math.abs(a.y);
+  const az = Math.abs(a.z);
+  const magnitude = Math.sqrt(ax * ax + ay * ay + az * az);
+
+  // Reject pure vertical motion (e.g. picking phone up off a table).
+  // Real walking has noticeable horizontal forward/back component.
+  const horizontal = Math.sqrt(ax * ax + az * az);
+  if (horizontal < MIN_HORIZONTAL_RATIO * ay) return;
+
   const now = Date.now();
   if (magnitude > STEP_THRESHOLD && (now - lastStepAt) > MIN_STEP_INTERVAL_MS) {
     lastStepAt = now;

@@ -24,34 +24,34 @@ export function MoodDetailScreen() {
 
   useEffect(() => {
     apiGet<MetricsResponse>('/api/metrics/today')
-      .then((r) => { setTodayMood(r.metrics.mood as Mood | null); setLoaded(true); })
+      .then((r) => { setTodayMood(r.metrics.mood as Mood | null);setLoaded(true); })
       .catch(() => setLoaded(true));
   }, []);
 
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
-    if (!loaded || !todayMood) return;
+    if (!loaded) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(async () => {
       try {
-        await apiPost('/api/metrics/today', { mood: todayMood });
+        await apiPost('/api/metrics/today', { mood: todayMood, stress: todayStress });
         setSavedFlash(true);
         setTimeout(() => setSavedFlash(false), 1000);
-      } catch {}
+      } catch { }
     }, 500);
-  }, [todayMood, loaded]);
+  }, [todayMood, todayStress, loaded]);
 
   const moods = [
     { value: 'great' as const, emoji: '😊', label: 'Great' },
-    { value: 'good'  as const, emoji: '🙂', label: 'Good'  },
-    { value: 'okay'  as const, emoji: '😐', label: 'Normal' },
-    { value: 'low'   as const, emoji: '😔', label: 'Bad'   }
+    { value: 'good' as const, emoji: '🙂', label: 'Good' },
+    { value: 'okay' as const, emoji: '😐', label: 'Normal' },
+    { value: 'low' as const, emoji: '😔', label: 'Bad' }
   ];
 
   const stressLevels = [
-    { value: 'low' as const,    label: 'Low'    },
+    { value: 'low' as const, label: 'Low' },
     { value: 'medium' as const, label: 'Medium' },
-    { value: 'high' as const,   label: 'High'   }
+    { value: 'high' as const, label: 'High' }
   ];
 
   // Mood scale: 1=Bad, 2=Normal, 3=Good, 4=Great
@@ -92,9 +92,8 @@ export function MoodDetailScreen() {
           <div className="grid grid-cols-4 gap-2">
             {moods.map((m) => (
               <button key={m.value} onClick={() => setTodayMood(m.value)}
-                className={`p-4 rounded-2xl flex flex-col items-center gap-2 transition-all ${
-                  todayMood === m.value ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-lightest)] text-[var(--color-dark)]'
-                }`}>
+                className={`p-4 rounded-2xl flex flex-col items-center gap-2 transition-all ${todayMood === m.value ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-lightest)] text-[var(--color-dark)]'
+                  }`}>
                 <span className="text-3xl">{m.emoji}</span>
                 <span className="text-caption">{m.label}</span>
               </button>
@@ -107,9 +106,8 @@ export function MoodDetailScreen() {
           <div className="grid grid-cols-3 gap-2">
             {stressLevels.map((level) => (
               <button key={level.value} onClick={() => setTodayStress(level.value)}
-                className={`p-4 rounded-xl flex flex-col items-center gap-2 transition-all ${
-                  todayStress === level.value ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-lightest)] text-[var(--color-dark)]'
-                }`}>
+                className={`p-4 rounded-xl flex flex-col items-center gap-2 transition-all ${todayStress === level.value ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-lightest)] text-[var(--color-dark)]'
+                  }`}>
                 <span className="text-body2">{level.label}</span>
               </button>
             ))}
