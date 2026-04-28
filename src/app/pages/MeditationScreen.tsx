@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MobileLayout } from '../components/MobileLayout';
 import { Card } from '../components/Card';
-import { Button } from '../components/Button';
 import { Play, Clock, Pause } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
