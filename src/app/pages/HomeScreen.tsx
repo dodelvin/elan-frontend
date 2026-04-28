@@ -23,10 +23,18 @@ export function HomeScreen() {
   });
 
   useEffect(() => {
-    apiGet<{ metrics: { steps: number; water: number; sleep: number; mood: string | null } }>(
+    apiGet<{ metrics?: { steps?: number; water?: number; sleep?: number; mood?: string | null } }>(
       '/api/metrics/today'
     )
-      .then((r) => setTodayMetrics(r.metrics))
+      .then((r) => {
+        const m = r.metrics || {};
+        setTodayMetrics({
+          steps: m.steps ?? 0,
+          water: m.water ?? 0,
+          sleep: m.sleep ?? 0,
+          mood: m.mood ?? null
+        });
+      })
       .catch(() => { });
   }, []);
 
