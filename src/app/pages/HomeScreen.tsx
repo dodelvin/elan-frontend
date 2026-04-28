@@ -5,13 +5,17 @@ import { useNavigate } from 'react-router-dom';
 import { Activity, Droplet, Moon, Smile, Brain, Heart, TrendingUp, Award } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useGoals } from '../lib/useGoals';
+import { useAuth } from '../contexts/AuthContext';
 
 export function HomeScreen() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [goals, saveGoals] = useGoals();
+  const { user } = useAuth();
+  const displayName = user?.displayName || user?.email?.split('@')[0] || 'there';
+  const avatarLetter = displayName.charAt(0).toUpperCase();
 
-  
+
   const quickStats = [
     { icon: Activity, label: t.dashboard.steps, value: '8,547', target: goals.stepsGoal.toLocaleString(), color: '#400101' },
     { icon: Droplet, label: t.dashboard.water, value: '6/8', target: t.dashboard.glasses, color: '#7E6961' },
@@ -33,16 +37,16 @@ export function HomeScreen() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <p className="text-subtitle2 text-[var(--color-mid-dark)]">{t.dashboard.greeting},</p>
-            <h5 className="text-[var(--color-darkest)]">Sarah</h5>
+            <h5 className="text-[var(--color-darkest)]">{displayName}</h5>
           </div>
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-mid-dark)] flex items-center justify-center text-white">
-            <span className="text-body1">S</span>
+            <span className="text-body1">{avatarLetter}</span>
           </div>
         </div>
 
         {/* Daily Quote */}
         <Card className="bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)] text-white border-0">
-          <p className="text-subtitle1 italic mb-2">\"Wellness is the complete integration of body, mind, and spirit.\"</p>
+          <p className="text-subtitle1 italic mb-2">"Wellness is the complete integration of body, mind, and spirit."</p>
           <p className="text-caption opacity-80">— Greg Anderson</p>
         </Card>
       </div>
@@ -127,7 +131,7 @@ export function HomeScreen() {
       <div className="px-6 mb-6">
         <h6 className="mb-4">{t.dashboard.quickActions}</h6>
         <div className="grid grid-cols-3 gap-3">
-          <Card className="text-center py-4 cursor-pointer" onClick={() => navigate('/tracker')}>
+          <Card className="text-center py-4 cursor-pointer" onClick={() => navigate('/goals')}>
             <Activity size={32} className="mx-auto mb-2 text-[var(--color-primary)]" />
             <p className="text-caption">{t.goals.title}</p>
           </Card>
