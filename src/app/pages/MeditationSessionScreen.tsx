@@ -26,8 +26,7 @@ interface MeditationSession {
 // Public sample videos. Replace each src with the real meditation video URL
 // when you have the assets. These are royalty-free placeholders that work
 // out of the box for the demo.
-const SAMPLE_VIDEO = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
-// const SAMPLE_VIDEO = 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4';
+const SAMPLE_VIDEO = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/mp4/DesigningForGoogleCast.mp4';
 
 const sessions: Record<number, MeditationSession> = {
   1: { id: 1, title: 'Focus Boost', duration: '3:00', description: 'Quick breathing exercise to enhance focus and clarity', category: 'Breathing', videoUrl: SAMPLE_VIDEO },
