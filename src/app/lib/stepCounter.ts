@@ -5,8 +5,8 @@
  */
 
 const STEP_THRESHOLD = 6;
-const MIN_STEP_INTERVAL_MS = 350;
-const MIN_HORIZONTAL_RATIO = 0.3;
+const MIN_STEP_INTERVAL_MS = 450;
+const MIN_HORIZONTAL_RATIO = 0.6;
 
 let started = false;
 let lastStepAt = 0;
