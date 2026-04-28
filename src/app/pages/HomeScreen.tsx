@@ -53,12 +53,28 @@ export function HomeScreen() {
     { icon: Smile, label: t.dashboard.mood, value: moodLabel, color: '#400101' }
   ];
 
-  const todayGoals = [
-    { id: 1, title: t.dashboard.morningYoga, completed: true, time: `10 ${t.dashboard.min}` },
-    { id: 2, title: `${t.dashboard.logWater}`, completed: false, time: '6/8' },
-    { id: 3, title: t.dashboard.startWorkout, completed: false, time: `30 ${t.dashboard.min}` },
-    { id: 4, title: t.dashboard.logMeal, completed: false, time: t.dashboard.pending }
-  ];
+  // Read today's goals from localStorage (same key DailyGoalsScreen uses)
+const [todayGoals, setTodayGoals] = useState<{ id: number; title: string; completed: boolean }[]>([]);
+
+useEffect(() => {
+  const todayKey = `elan-daily-goals-${new Date().toISOString().slice(0, 10)}`;
+  try {
+    const cached = localStorage.getItem(todayKey);
+    if (cached) {
+      setTodayGoals(JSON.parse(cached));
+    } else {
+      // Fallback defaults if no goals saved yet (matches DailyGoalsScreen defaults)
+      setTodayGoals([
+        { id: 1, title: t.dashboard.morningYoga,  completed: false },
+        { id: 2, title: t.dashboard.logWater,     completed: false },
+        { id: 3, title: t.dashboard.startWorkout, completed: false },
+        { id: 4, title: t.dashboard.logMeal,      completed: false }
+      ]);
+    }
+  } catch {
+    setTodayGoals([]);
+  }
+}, [t]);
 
   return (
     <MobileLayout>
@@ -147,7 +163,6 @@ export function HomeScreen() {
                     {goal.title}
                   </p>
                 </div>
-                <span className="text-caption text-[var(--color-mid-dark)]">{goal.time}</span>
               </div>
             ))}
           </div>
