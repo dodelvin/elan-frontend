@@ -6,6 +6,8 @@ import { Activity, Droplet, Moon, Smile, Brain, Heart, TrendingUp, Award } from 
 import { useLanguage } from '../contexts/LanguageContext';
 import { useGoals } from '../lib/useGoals';
 import { useAuth } from '../contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { apiGet } from '../lib/api';
 
 export function HomeScreen() {
   const navigate = useNavigate();
@@ -15,12 +17,29 @@ export function HomeScreen() {
   const displayName = user?.displayName || user?.email?.split('@')[0] || 'there';
   const avatarLetter = displayName.charAt(0).toUpperCase();
 
+  // Today's metrics from /api/metrics/today
+  const [todayMetrics, setTodayMetrics] = useState({
+    steps: 0, water: 0, sleep: 0, mood: null as string | null
+  });
+
+  useEffect(() => {
+    apiGet<{ metrics: { steps: number; water: number; sleep: number; mood: string | null } }>(
+      '/api/metrics/today'
+    )
+      .then((r) => setTodayMetrics(r.metrics))
+      .catch(() => { });
+  }, []);
+
+
+  const moodLabel = todayMetrics.mood
+    ? { great: t.dashboard.great, good: t.dashboard.good, okay: t.dashboard.okay, low: t.dashboard.low }[todayMetrics.mood] || '—'
+    : '—';
 
   const quickStats = [
-    { icon: Activity, label: t.dashboard.steps, value: '8,547', target: goals.stepsGoal.toLocaleString(), color: '#400101' },
-    { icon: Droplet, label: t.dashboard.water, value: '6/8', target: t.dashboard.glasses, color: '#7E6961' },
-    { icon: Moon, label: t.dashboard.sleep, value: '7.5h', target: '8h', color: '#B2A5A0' },
-    { icon: Smile, label: t.dashboard.mood, value: t.dashboard.great, target: '', color: '#400101' }
+    { icon: Activity, label: t.dashboard.steps, value: todayMetrics.steps.toLocaleString(), color: '#400101' },
+    { icon: Droplet, label: t.dashboard.water, value: `${todayMetrics.water}/${goals.waterGoal}`, color: '#7E6961' },
+    { icon: Moon, label: t.dashboard.sleep, value: `${todayMetrics.sleep}h`, color: '#B2A5A0' },
+    { icon: Smile, label: t.dashboard.mood, value: moodLabel, color: '#400101' }
   ];
 
   const todayGoals = [
@@ -64,10 +83,7 @@ export function HomeScreen() {
             const isClickable = isSteps || isWater || isSleep || isMood;
 
             const handleClick = () => {
-              if (isSteps) {
-                saveGoals({ stepsGoal: goals.stepsGoal + 1000 });
-                return;
-              }
+              if (isSteps) navigate('/steps');
               if (isWater) navigate('/water');
               if (isSleep) navigate('/sleep');
               if (isMood) navigate('/mood');
