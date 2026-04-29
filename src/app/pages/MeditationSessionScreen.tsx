@@ -31,7 +31,7 @@ export function MeditationSessionScreen() {
       duration: '3:00',
       description: 'Quick breathing exercise to enhance focus and clarity',
       category: 'Breathing',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+      audioUrl: 'https://res.cloudinary.com/dwastzygv/video/upload/v1777489324/Focus_Boost_yee1fy.mp3'
     },
     2: {
       id: 2,
@@ -39,7 +39,7 @@ export function MeditationSessionScreen() {
       duration: '3:00',
       description: 'Rapid relaxation through controlled breathing',
       category: 'Breathing',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+      audioUrl: 'https://res.cloudinary.com/dwastzygv/video/upload/v1777489331/Instant_Calm_bflcz4.mp3'
     },
     3: {
       id: 3,
@@ -47,7 +47,7 @@ export function MeditationSessionScreen() {
       duration: '4:00',
       description: 'Gentle tapping meditation for stress relief',
       category: 'Basic Meditation',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+      audioUrl: 'https://res.cloudinary.com/dwastzygv/video/upload/v1777489335/Calming_Taps_rcgyiy.mp3'
     },
     4: {
       id: 4,
@@ -55,7 +55,7 @@ export function MeditationSessionScreen() {
       duration: '4:00',
       description: 'Soothing meditation to ease anxiety and worry',
       category: 'Basic Meditation',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
+      audioUrl: 'https://res.cloudinary.com/dwastzygv/video/upload/v1777489323/Anxiety_Relief_buandc.mp3'
     },
     5: {
       id: 5,
@@ -63,7 +63,7 @@ export function MeditationSessionScreen() {
       duration: '4:00',
       description: 'Systematic body awareness and relaxation',
       category: 'Basic Meditation',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+      audioUrl: 'https://res.cloudinary.com/dwastzygv/video/upload/v1777489324/Body_Scan_rbbwes.mp3'
     },
     6: {
       id: 6,
@@ -71,7 +71,7 @@ export function MeditationSessionScreen() {
       duration: '3:00',
       description: 'Train your attention through guided focus shifts',
       category: 'Attention Training',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+      audioUrl: 'https://res.cloudinary.com/dwastzygv/video/upload/v1777489333/Moving_Focus_ecjgeb.mp3'
     },
     7: {
       id: 7,
@@ -79,7 +79,7 @@ export function MeditationSessionScreen() {
       duration: '10:00',
       description: 'Develop deep listening skills and presence',
       category: 'Attention Training',
-      audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+      audioUrl: 'https://res.cloudinary.com/dwastzygv/video/upload/v1777489752/Active_Listening_crbg0r.mp3'
     }
   };
 
